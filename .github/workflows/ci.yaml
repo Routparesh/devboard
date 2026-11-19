@@ -20,5 +20,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
+          context: .
+          file: C:\Users\SHREEG\Desktop\devboard\frontend
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-fr:latest
