@@ -4,20 +4,9 @@ on:
   push:
     branches: [master]
 
-permissions:
-  contents: read
-  checks: write
-  pull-requests: write
-
 jobs:
-  run-linters:
-    name: Run linters
+  frontend:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      checks: write
-      pull-requests: write
 
     steps:
       - name: Check out Git repository
@@ -41,13 +30,6 @@ jobs:
         working-directory: ./frontend
         run: npm run test
 
-  build-push:
-    needs: [run-linters]
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v6
-
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
@@ -60,4 +42,43 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-fr:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version: '1.23'
+          go-version-file: 'go.mod'
+          cache-dependency-path: 'go.sum'
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.13
+
+      - name: Run tests
+        run: go test -v -race ./...
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest
+
+  deploy:
+    needs: [frontend, backend]
+    uses: ./.github/workflows/cd.yml
+    secrets: inherit
