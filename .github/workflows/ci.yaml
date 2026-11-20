@@ -4,10 +4,20 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
 
     steps:
       - name: Check out Git repository
@@ -29,7 +39,7 @@ jobs:
           eslint: true
           eslint_dir: frontend
           eslint_extensions: js,jsx
-          eslint_args: 'src'
+          eslint_args: '--format stylish --max-warnings=0 src'
           auto_fix: false
   build-push:
     needs: [run-linters]
