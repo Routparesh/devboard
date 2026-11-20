@@ -39,7 +39,7 @@ jobs:
           eslint: true
           eslint_dir: frontend
           eslint_extensions: js,jsx
-          eslint_args: '--format stylish --max-warnings=0 src'
+          eslint_args: '--max-warnings=0 src'
           auto_fix: false
   build-push:
     needs: [run-linters]
