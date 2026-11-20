@@ -27,6 +27,10 @@ jobs:
         uses: wearerequired/lint-action@v3
         with:
           eslint: true
+          eslint_dir: frontend
+          eslint_extensions: js,jsx
+          eslint_args: 'src'
+          auto_fix: false
   build-push:
     needs: [run-linters]
     runs-on: ubuntu-latest
