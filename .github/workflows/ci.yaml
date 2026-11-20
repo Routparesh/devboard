@@ -34,13 +34,11 @@ jobs:
         run: npm install
 
       - name: Run linters
-        uses: wearerequired/lint-action@v3
-        with:
-          eslint: true
-          eslint_dir: frontend
-          eslint_extensions: js,jsx
-          eslint_args: '--max-warnings=0 src'
-          auto_fix: false
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
   build-push:
     needs: [run-linters]
     runs-on: ubuntu-latest
