@@ -7,15 +7,16 @@ import (
 )
 
 func TestEnvReturnsFallbackWhenUnset(t *testing.T) {
-	os.Unsetenv("DEVBOARD_TEST_KEY")
+	if err := os.Unsetenv("DEVBOARD_TEST_KEY"); err != nil {
+	    t.Fatal(err)
+   }
 	if got := env("DEVBOARD_TEST_KEY", "fallback"); got != "fallback" {
 		t.Errorf("env() = %q, want %q", got, "fallback")
 	}
 }
 
 func TestEnvReturnsValueWhenSet(t *testing.T) {
-	os.Setenv("DEVBOARD_TEST_KEY", "real")
-	defer os.Unsetenv("DEVBOARD_TEST_KEY")
+	t.Setenv("DEVBOARD_TEST_KEY", "real")
 	if got := env("DEVBOARD_TEST_KEY", "fallback"); got != "real" {
 		t.Errorf("env() = %q, want %q", got, "real")
 	}
