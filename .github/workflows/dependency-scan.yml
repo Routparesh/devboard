@@ -45,8 +45,16 @@ jobs:
         working-directory: ./frontend
         run: npm audit --audit-level=high
 
+      - name: Generate vulnerability report
+        working-directory: ./backend
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          govulncheck ./... > reports/dependency-check.txt 2>&1
+
       - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: scan-report
           path: reports/dependency-check.txt
+          if-no-files-found: warn
