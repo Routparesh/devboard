@@ -1,0 +1,19 @@
+name: docker-scan
+
+on:
+  workflow_call:
+
+jobs:
+  dockerfile-lint-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: ['frontend', 'backend']
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v7
+
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ matrix.folder }}
