@@ -21,3 +21,4 @@ jobs:
         with:
           go-version-input: '1.26.0' # Matches your go.mod version
           go-package: './...'
+          work-dir: './backend'
