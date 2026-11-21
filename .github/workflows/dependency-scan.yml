@@ -42,6 +42,7 @@ jobs:
           npm install
 
       - name: Run security audit
+        working-directory: ./frontend
         run: npm audit --audit-level=high
 
       - uses: actions/upload-artifact@v7
