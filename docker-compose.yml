@@ -18,7 +18,7 @@ services:
 
   backend:
     build: ./backend
-    image: routparesh/devboard-frontend:latest
+    image: routparesh/devboard-backend:latest
     environment:
       PORT: "${BACKEND_PORT}"
       POSTGRES_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
