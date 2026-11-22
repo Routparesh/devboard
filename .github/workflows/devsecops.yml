@@ -25,10 +25,10 @@ jobs:
 
   deploy:
     needs: [call-code-quality, secret-scanning, dependency-check, sonar_qube, docker-check]
-    uses: ./.github/workflows/docker-scans.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
 
   zap-scan:
-    needs: [call-code-quality, secret-scanning, dependency-check, sonar_qube, docker-check, deploy]
+    needs: [deploy]
     uses: ./.github/workflows/dast.yml
     secrets: inherit
