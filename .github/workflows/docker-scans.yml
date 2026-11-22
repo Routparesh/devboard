@@ -3,6 +3,9 @@ name: docker-scan
 on:
   workflow_call:
 
+permissions:
+  contents: write
+
 jobs:
   dockerfile-lint-scan:
     runs-on: ubuntu-latest
@@ -40,4 +43,10 @@ jobs:
 
       - name: docker push
         run: |
-          docker push  {{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest
+          docker push  ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest
+
+      - name: Update image in docker-compose file
+        run: |
+          sed -i 's|image: trainwithshubham/devboard-frontend:${IMAGE_TAG:-latest}*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
+
+          sed -i 's|image: trainwithshubham/devboard-backend:${IMAGE_TAG:-latest}*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
