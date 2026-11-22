@@ -1,0 +1,21 @@
+name: dast
+
+on:
+  workflow_call:
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: master
+
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'http://32.192.183.149:8080'
+          allow_issue_writing: false
+          fail_action: false
