@@ -47,9 +47,9 @@ jobs:
 
       - name: Update image in docker-compose file
         run: |
-          sed -i 's|image: trainwithshubham/devboard-frontend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
+          sed -i 's|image: trainwithshubham/devboard-frontend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest|g' docker-compose.yml
 
-          sed -i 's|image: trainwithshubham/devboard-backend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
+          sed -i 's|image: trainwithshubham/devboard-backend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest|g' docker-compose.yml
 
           echo "Updated docker-compose.yml:"
           cat docker-compose.yml
@@ -67,3 +67,6 @@ jobs:
              else
           echo "No changes to commit"
           fi
+          git fetch origin master
+          git rebase origin/master
+          git push origin HEAD:master
