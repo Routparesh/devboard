@@ -47,9 +47,11 @@ jobs:
 
       - name: Update image in docker-compose file
         run: |
-          sed -i 's|image: trainwithshubham/devboard-frontend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest|g' docker-compose.yml
+          # Update only the backend service
+          sed -i '/^  backend:/,/^  frontend:/ s|image: .*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest|' docker-compose.yml
 
-          sed -i 's|image: trainwithshubham/devboard-backend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:latest|g' docker-compose.yml
+          # Update only the frontend service
+          sed -i '/^  frontend:/,/^volumes:/ s|image: .*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-frontend:latest|' docker-compose.yml
 
           echo "Updated docker-compose.yml:"
           cat docker-compose.yml
@@ -67,6 +69,3 @@ jobs:
              else
           echo "No changes to commit"
           fi
-          git fetch origin master
-          git rebase origin/master
-          git push origin HEAD:master
