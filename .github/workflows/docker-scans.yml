@@ -47,6 +47,6 @@ jobs:
 
       - name: Update image in docker-compose file
         run: |
-          sed -i 's|image: trainwithshubham/devboard-frontend:${IMAGE_TAG:-latest}*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
+          sed -i 's|image: trainwithshubham/devboard-frontend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
 
-          sed -i 's|image: trainwithshubham/devboard-backend:${IMAGE_TAG:-latest}*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
+          sed -i 's|image: trainwithshubham/devboard-backend:.*|image: ${{ vars.DOCKERHUB_USERNAME }}/devboard-${{ matrix.folder }}:latest|g' docker-compose.yml
