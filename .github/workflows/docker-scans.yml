@@ -57,15 +57,19 @@ jobs:
           cat docker-compose.yml
 
       - name: Commit and push changes
+        shell: bash
         run: |
           git config user.name "routparesh"
           git config user.email "routpareshkumar737@gmail.com"
+          git fetch origin "${GITHUB_REF_NAME}"
+          git reset --hard "origin/${GITHUB_REF_NAME}"
 
           git add docker-compose.yml
 
           if ! git diff --cached --quiet; then
-          git commit -m "chore: update Docker image names"
-          git push origin HEAD:${GITHUB_REF_NAME}
-             else
-          echo "No changes to commit"
+            git commit -m "chore: update Docker image names"
+
+            git push origin HEAD:${GITHUB_REF_NAME}
+          else
+            echo "No changes to commit"
           fi
