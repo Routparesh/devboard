@@ -1,7 +1,7 @@
 name: dast
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   zap_scan:
